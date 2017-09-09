@@ -16,9 +16,49 @@ var isSPressed = false;
 var isDPressed = false;
 var isAPressed = false;
 var isBPressed = false;
+var isEnterPressed = false;
 
 const NEG_Z_VECTOR = new BABYLON.Vector3(0, -1, -1);
 
+Game.startscene = function () {
+
+    scene = new BABYLON.Scene(engine);
+    scene.clearolor = new BABYLON.Color3(1, 1, 1);
+
+    fakeanimi(scene);
+
+    var sceneIndex = Game.scenes.push(scene) - 1;
+
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 0, -2), scene);
+
+    camera.setTarget(BABYLON.Vector3.Zero());
+
+    camera.attachControl(canvas, true);
+
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 5, 0), scene);
+
+    var mesh = new BABYLON.Mesh.CreatePlane('plane', 0.7, scene);
+    mesh.scaling.y = 2.3;
+    mesh.scaling.x = 4.5;
+    mesh.material = new BABYLON.StandardMaterial('material', scene);
+    mesh.material.diffuseTexture = new BABYLON.Texture("images/startscene.png", scene);
+
+    camera.lockedTarget = mesh;
+
+    Game.scenes[sceneIndex].moveToFirstScene = function () {
+
+        if (isEnterPressed)
+            Game.activeScene = 1;
+    }
+
+    Game.scenes[sceneIndex].renderLoop = function () {
+
+        this.moveToFirstScene();
+        this.render();
+    }
+    
+    return scene;
+}
 
 Game.createFirstScene = function () {
 
@@ -29,8 +69,8 @@ Game.createFirstScene = function () {
     var speed3 = Math.random() + 2;
 
     var car1 = createCar(scene, speed1, 3, new BABYLON.Color3.Red);
-    var car2 = createCar(scene, speed2, 15, new BABYLON.Color3.Blue);
-    var car3 = createCar(scene, speed3, -10, new BABYLON.Color3(1, 1, 1));
+    var car2 = createCar(scene, speed2, 6, new BABYLON.Color3.Blue);
+    var car3 = createCar(scene, speed3, -0.3, new BABYLON.Color3(1, 1, 1));
 
     var skybox = createSkyBox("textures/sky/TropicalSunnyDay", scene);
 
@@ -101,14 +141,14 @@ Game.createFirstScene = function () {
             car2.position.z < endline.position.z + 30){
 
             Game.previouslevel = 1;
-            Game.activeScene = 4;
+            Game.activeScene = 5;
         }
 
         else if(car3.position.z > endline.position.z - 30 &&
                 car3.position.z < endline.position.z + 30) {
 
-            Game.previouslevel = 1;
-            Game.activeScene = 4;
+            Game.previouslevel = 1.5;
+            Game.activeScene = 5;
         }
 
     }
@@ -120,13 +160,16 @@ Game.createFirstScene = function () {
             car1.position.z < endline.position.z + 30) {
 
             Game.score += 10;
-            Game.activeScene = 1;
+            Game.activeScene = 2;
         }
 
     }
 
     Game.scenes[sceneIndex].renderLoop = function () {
-
+        engine.displayLoadingUI();
+        if (Game.scenes[0].isLoaded) {
+            engine.hideLoadingUI();
+        }
         this.applyTankMovements(car1, car2, car3);
         this.checkMoveToNextLevel(car1, endline);
         this.gameover(car2, car3);
@@ -145,8 +188,8 @@ Game.createSecondScene = function () {
     var speed3 = Math.random() + 2;
 
     var car1 = createCar(scene, speed1, 3, new BABYLON.Color3.Red);
-    var car2 = createCar(scene, speed2, 15, new BABYLON.Color3.Blue);
-    var car3 = createCar(scene, speed3, -10, new BABYLON.Color3(1, 1, 1));
+    var car2 = createCar(scene, speed2, 6, new BABYLON.Color3.Blue);
+    var car3 = createCar(scene, speed3, -0.3, new BABYLON.Color3(1, 1, 1));
 
     scene.gravity = new BABYLON.Vector3(0, -10, 0);
     
@@ -214,14 +257,14 @@ Game.createSecondScene = function () {
             car2.position.z < endline.position.z + 30) {
 
             Game.previouslevel = 2;
-            Game.activeScene = 4;
+            Game.activeScene = 5;
         }
 
         else if(car3.position.z > endline.position.z - 30 &&
                 car3.position.z < endline.position.z + 30) {
 
-            Game.previouslevel = 2;
-            Game.activeScene = 4;
+            Game.previouslevel = 2.5;
+            Game.activeScene = 5;
         }
 
     }
@@ -233,7 +276,7 @@ Game.createSecondScene = function () {
             car1.position.z < endline.position.z + 30) {
 
             Game.score += 20;
-            Game.activeScene = 2;
+            Game.activeScene = 3;
         }
 
     }
@@ -258,8 +301,8 @@ Game.createThirdScene = function () {
     var speed3 = Math.random() + 2;
 
     var car1 = createCar(scene, speed1, 3, new BABYLON.Color3.Red);
-    var car2 = createCar(scene, speed2, 15, new BABYLON.Color3.Blue);
-    var car3 = createCar(scene, speed3, -10, new BABYLON.Color3(1, 1, 1));
+    var car2 = createCar(scene, speed2, 6, new BABYLON.Color3.Blue);
+    var car3 = createCar(scene, speed3, -0.3, new BABYLON.Color3(1, 1, 1));
     scene.gravity = new BABYLON.Vector3(0, -10, 0);
 
     var skybox = createSkyBox("textures/sky/nebula", scene);
@@ -313,14 +356,14 @@ Game.createThirdScene = function () {
             car2.position.z < endline.position.z + 30) {
 
             Game.previouslevel = 3;
-            Game.activeScene = 4;
+            Game.activeScene = 5;
         }
 
         else if(car3.position.z > endline.position.z - 30 &&
                 car3.position.z < endline.position.z + 30) {
 
-            Game.previouslevel = 3;
-            Game.activeScene = 4;
+            Game.previouslevel = 3.5;
+            Game.activeScene = 5;
         }
 
     }
@@ -332,7 +375,7 @@ Game.createThirdScene = function () {
             car1.position.z < endline.position.z + 30) {
 
             Game.score += 30;
-            Game.activeScene = 3;
+            Game.activeScene = 4;
         }
 
     }
@@ -357,8 +400,8 @@ Game.createFourthScene = function () {
         var speed3 = Math.random() + 2;
 
         var car1 = createCar(scene, speed1, 3, new BABYLON.Color3.Red);
-        var car2 = createCar(scene, speed2, 15, new BABYLON.Color3.Blue);
-        var car3 = createCar(scene, speed3, -10, new BABYLON.Color3(1, 1, 1));
+        var car2 = createCar(scene, speed2, 6, new BABYLON.Color3.Blue);
+        var car3 = createCar(scene, speed3, -0.3, new BABYLON.Color3(1, 1, 1));
         scene.gravity = new BABYLON.Vector3(0, -10, 0);
 
         var skybox = createSkyBox("textures/sky/sky", scene);
@@ -412,14 +455,14 @@ Game.createFourthScene = function () {
                 car2.position.z < finishline.position.z + 30) {
 
                 Game.previouslevel = 4;
-                Game.activeScene = 4;
+                Game.activeScene = 5;
             }
 
             else if (car3.position.z > finishline.position.z - 30 &&
                      car3.position.z < finishline.position.z + 30) {
 
-                Game.previouslevel = 4;
-                Game.activeScene = 4;
+                Game.previouslevel = 4.5;
+                Game.activeScene = 5;
             }
 
         }
@@ -432,7 +475,7 @@ Game.createFourthScene = function () {
 
                 Game.score += 40;
                 Game.previouslevel = 5;
-                Game.activeScene = 4;
+                Game.activeScene = 5;
             }
 
         }
@@ -461,7 +504,7 @@ Game.createGameEnding = function () {
 
     camera.attachControl(canvas, true);
 
-    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 5, 0), scene);
 
     var mesh = new BABYLON.Mesh.CreatePlane('plane', 0.7, scene);
     mesh.scaling.y = 2.3;
@@ -470,6 +513,10 @@ Game.createGameEnding = function () {
 
     Game.scenes[sceneIndex].loadingimage = function (scene) {
         if (Game.previouslevel == 1 || Game.previouslevel == 2 || Game.previouslevel == 3 || Game.previouslevel == 4) {
+            mesh.material.diffuseTexture = new BABYLON.Texture("images/download1.png", scene);
+            loadendmessages(scene);
+        }
+        else if (Game.previouslevel == 1.5 || Game.previouslevel == 2.5 || Game.previouslevel == 3.5 || Game.previouslevel == 4.5) {
             mesh.material.diffuseTexture = new BABYLON.Texture("images/download1.png", scene);
             loadendmessages(scene);
         }
@@ -494,7 +541,8 @@ function startGame() {
     canvas = document.getElementById("renderCanvas");
     engine = new BABYLON.Engine(canvas, true);
     engine.isPointerLock = true;
-    engine.displayLoadingUI();
+    //engine.displayLoadingUI();
+    Game.startscene();
     Game.createFirstScene();
     Game.createSecondScene();
     Game.createThirdScene();
@@ -502,10 +550,10 @@ function startGame() {
     Game.createGameEnding();
 
     engine.runRenderLoop(function () {
-        if (Game.scenes[0].isLoaded) {
+       /* if (Game.scenes[0].isLoaded) {
             engine.hideLoadingUI();
         }
-        else return;
+        else return;*/
 
         Game.scenes[Game.activeScene].renderLoop();
     });
@@ -551,9 +599,9 @@ function createCar(scene, carspeed, carx, carcolor) {
 
     car.position.y += 2;
     car.position.x = carx;
-    car.scaling.y *= 2.5;
-    car.scaling.x = 3;
-    car.scaling.z = 5;
+    car.scaling.y *= .5;
+    car.scaling.x = 1;
+    car.scaling.z = 2;
 
     car.rotationSensitivity = .3;
     car.speed = carspeed;
@@ -567,8 +615,8 @@ function createCar(scene, carspeed, carx, carcolor) {
 function createFollowCamera(target, scene) {
     var camera = new BABYLON.FollowCamera("fc", new BABYLON.Vector3(0, 2, -20), scene);
     camera.lockedTarget = target;
-    camera.radius = 17; 
-    camera.heightOffset = 7; 
+    camera.radius = 10; 
+    camera.heightOffset = 2; 
     camera.rotationOffset = 0; 
     camera.cameraAcceleration = 0.05 
     camera.maxCameraSpeed = 20
@@ -628,6 +676,9 @@ document.addEventListener("keydown", function (event) {
     if (event.key == 's' || event.key == 'S') {
         isSPressed = true;
     }
+    if (event.keyCode == '13') {
+        isEnterPressed = true;
+    }
 
 });
 
@@ -644,6 +695,9 @@ document.addEventListener("keyup", function () {
     }
     if (event.key == 's' || event.key == 'S') {
         isSPressed = false;
+    }
+    if (event.keyCode == '13') {
+        isEnterPressed = false;
     }
 });
 
@@ -666,7 +720,7 @@ function loadendmessages(scene) {
 
     if (Game.previouslevel == 1 || Game.previouslevel == 2 || Game.previouslevel == 3 || Game.previouslevel == 4) {
 
-        var message = confirm("Game Over! 😪😪😪 Your Score: " + Game.score);
+        var message = confirm("Game Over! 😪😪😪 Blue Car Wins! Your Score: " + Game.score);
         if (message == true) {
             var replay = confirm("Replay?!")
             if (replay == true) {
@@ -675,7 +729,18 @@ function loadendmessages(scene) {
         }
     }
 
-    if (Game.previouslevel == 5) {
+    else if (Game.previouslevel == 1.5 || Game.previouslevel == 2.5 || Game.previouslevel == 3.5 || Game.previouslevel == 4.5) {
+
+        var message = confirm("Game Over! 😪😪😪 White Car Wins! Your Score: " + Game.score);
+        if (message == true) {
+            var replay = confirm("Replay?!")
+            if (replay == true) {
+                window.location.reload();
+            }
+        }
+    }
+
+    else if (Game.previouslevel == 5) {
 
         //mesh.material.diffuseTexture = new BABYLON.Texture("images/winner.jpg", scene);
         var message = confirm("CONGRATULATIONS! You Won! 😄🎊🎉 Your Score: " + Game.score);
