@@ -69,8 +69,8 @@ Game.createFirstScene = function () {
     var speed3 = Math.random() + 2;
 
     var car1 = createCar(scene, speed1, 3, new BABYLON.Color3.Red);
-    var car2 = createCar(scene, speed2, 15, new BABYLON.Color3.Blue);
-    var car3 = createCar(scene, speed3, -10, new BABYLON.Color3(1, 1, 1));
+    var car2 = createCar(scene, speed2, 6, new BABYLON.Color3.Blue);
+    var car3 = createCar(scene, speed3, -0.3, new BABYLON.Color3(1, 1, 1));
 
     var skybox = createSkyBox("textures/sky/TropicalSunnyDay", scene);
 
@@ -188,8 +188,8 @@ Game.createSecondScene = function () {
     var speed3 = Math.random() + 2;
 
     var car1 = createCar(scene, speed1, 3, new BABYLON.Color3.Red);
-    var car2 = createCar(scene, speed2, 15, new BABYLON.Color3.Blue);
-    var car3 = createCar(scene, speed3, -10, new BABYLON.Color3(1, 1, 1));
+    var car2 = createCar(scene, speed2, 6, new BABYLON.Color3.Blue);
+    var car3 = createCar(scene, speed3, -0.3, new BABYLON.Color3(1, 1, 1));
 
     scene.gravity = new BABYLON.Vector3(0, -10, 0);
     
@@ -301,8 +301,8 @@ Game.createThirdScene = function () {
     var speed3 = Math.random() + 2;
 
     var car1 = createCar(scene, speed1, 3, new BABYLON.Color3.Red);
-    var car2 = createCar(scene, speed2, 15, new BABYLON.Color3.Blue);
-    var car3 = createCar(scene, speed3, -10, new BABYLON.Color3(1, 1, 1));
+    var car2 = createCar(scene, speed2, 6, new BABYLON.Color3.Blue);
+    var car3 = createCar(scene, speed3, -0.3, new BABYLON.Color3(1, 1, 1));
     scene.gravity = new BABYLON.Vector3(0, -10, 0);
 
     var skybox = createSkyBox("textures/sky/nebula", scene);
@@ -400,8 +400,8 @@ Game.createFourthScene = function () {
         var speed3 = Math.random() + 2;
 
         var car1 = createCar(scene, speed1, 3, new BABYLON.Color3.Red);
-        var car2 = createCar(scene, speed2, 15, new BABYLON.Color3.Blue);
-        var car3 = createCar(scene, speed3, -10, new BABYLON.Color3(1, 1, 1));
+        var car2 = createCar(scene, speed2, 6, new BABYLON.Color3.Blue);
+        var car3 = createCar(scene, speed3, -0.3, new BABYLON.Color3(1, 1, 1));
         scene.gravity = new BABYLON.Vector3(0, -10, 0);
 
         var skybox = createSkyBox("textures/sky/sky", scene);
@@ -599,9 +599,9 @@ function createCar(scene, carspeed, carx, carcolor) {
 
     car.position.y += 2;
     car.position.x = carx;
-    car.scaling.y *= 2.5;
-    car.scaling.x = 3;
-    car.scaling.z = 5;
+    car.scaling.y *= .5;
+    car.scaling.x = 1;
+    car.scaling.z = 2;
 
     car.rotationSensitivity = .3;
     car.speed = carspeed;
@@ -615,8 +615,8 @@ function createCar(scene, carspeed, carx, carcolor) {
 function createFollowCamera(target, scene) {
     var camera = new BABYLON.FollowCamera("fc", new BABYLON.Vector3(0, 2, -20), scene);
     camera.lockedTarget = target;
-    camera.radius = 17; 
-    camera.heightOffset = 7; 
+    camera.radius = 10; 
+    camera.heightOffset = 2; 
     camera.rotationOffset = 0; 
     camera.cameraAcceleration = 0.05 
     camera.maxCameraSpeed = 20
